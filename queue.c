@@ -27,6 +27,7 @@ queue_t *q_new()
     queue_t *q = malloc(sizeof(queue_t));
     /* What if malloc returned NULL? */
     q->head = NULL;
+    q->qsize = 0;
     return q;
 }
 
@@ -104,7 +105,7 @@ int q_size(queue_t *q)
   This function should not allocate or free any list elements
   (e.g., by calling q_insert_head, q_insert_tail, or q_remove_head).
   It should rearrange the existing ones.
- */
+*/
 void q_reverse(queue_t *q)
 {
     /* You need to write the code for this function */
