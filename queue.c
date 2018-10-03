@@ -23,7 +23,7 @@
 */
 queue_t *q_new()
 {
-    queue_t *q = malloc(sizeof(queue_t));
+    queue_t *q = malloc(sizeof(*q));
     if (!q)
         return false;
     q->head = NULL;
@@ -45,9 +45,6 @@ void q_free(queue_t *q)
                 free(temp->value);
                 free(temp);
             }
-            q->head = NULL;
-            q->tail = NULL;
-            q->qsize = 0;
             free(q);
         }
     }
@@ -67,20 +64,25 @@ bool q_insert_head(queue_t *q, char *s)
     if (!q || !s)
         return false;
 
-    list_ele_t *newh = malloc(sizeof(list_ele_t));
+    list_ele_t *newh = malloc(sizeof(*newh));
 
     if (!newh)
         return false;
 
-    char *content = malloc(sizeof(strlen(s) + 1));
+    int s_len = strlen(s) + 1;
+    // printf("string length excluding the terminating null byte = %d bits\n",
+    // s_len-1);
+    char *content = (char *) malloc(s_len * sizeof(char));
 
     if (!content) {
         free(newh);
         return false;
     }
+
+    // printf("obtain %lu bits from malloc\n", strlen(content));
     strcpy(content, s);
-    /* Don't forget to allocate space for the string and copy it */
-    /* What if either call to malloc returns NULL? */
+    // printf("actually obtain %lu bits after use strcpy\n", strlen(content));
+
     if (!q->qsize) {
         q->head = newh;
         q->tail = newh;
@@ -111,12 +113,12 @@ bool q_insert_tail(queue_t *q, char *s)
     if (!q || !s)
         return false;
 
-    list_ele_t *newt = malloc(sizeof(list_ele_t));
+    list_ele_t *newt = malloc(sizeof(*newt));
 
     if (!newt)
         return false;
-
-    char *content = malloc(sizeof(strlen(s) + 1));
+    int s_len = strlen(s) + 1;
+    char *content = (char *) malloc((s_len * sizeof(char)));
 
     if (!content) {
         free(newt);
